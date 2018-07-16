@@ -43,12 +43,12 @@ void CGame::Init()
 
 	myActors.reserve(ActorCount);
 	myActors.push_back(CActor());
-	myActors.back().Create(myTextures[(unsigned)ETextureIndexes::Fleer], 150.f, 0);
+	myActors.back().Create(myTextures[(unsigned)ETextureIndexes::Player], 150.f, 0);
 	myActors.back().AttatchController(new CStateMachineController());
 	myActors.back().GetController()->SetSteeringBehaviour(new CWander()); 
 
 	myActors.push_back(CActor());
-	myActors.back().Create(myTextures[(unsigned)ETextureIndexes::Fleer], 150.f, 1);
+	myActors.back().Create(myTextures[(unsigned)ETextureIndexes::Pusher], 150.f, 1);
 	myActors.back().AttatchController(new CDecisionTreeController());
 	myActors.back().GetController()->SetSteeringBehaviour(new CWander());
 

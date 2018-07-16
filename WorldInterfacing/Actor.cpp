@@ -238,7 +238,7 @@ void CActor::Update(float aDT)
 
 void CActor::Render(sf::RenderWindow * aWindow)
 {
-	sf::Vector2f textOffset = {0,20};
+	sf::Vector2f textOffset = {-25,-72};
 	myText.setString(sf::String(std::to_string(myHealth)));
 
 	mySprite.setPosition(myPosition);
