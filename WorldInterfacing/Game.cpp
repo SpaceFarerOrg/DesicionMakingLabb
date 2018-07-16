@@ -42,17 +42,15 @@ void CGame::Init()
 	myPollingStation.RegisterFunction(CPollingStation::EPollableValue::arriverPos, [&]()->const sf::Vector2f&{ return GetArriverPos(); });
 
 	myActors.reserve(ActorCount);
-	for (unsigned i = 0; i < ActorCount; ++i)
-	{
-		myActors.push_back(CActor());
-		myActors[i].Create(myTextures[(unsigned)ETextureIndexes::Fleer], 150.f, i);
-		//if (i % 2 == 0)
-		//	myActors[i].AttatchController(new CDecisionTreeController());
-		//else
-			myActors[i].AttatchController(new CStateMachineController());
+	myActors.push_back(CActor());
+	myActors.back().Create(myTextures[(unsigned)ETextureIndexes::Fleer], 150.f, 0);
+	myActors.back().AttatchController(new CStateMachineController());
+	myActors.back().GetController()->SetSteeringBehaviour(new CWander()); 
 
-		myActors[i].GetController()->SetSteeringBehaviour(new CWander()); 
-	}
+	myActors.push_back(CActor());
+	myActors.back().Create(myTextures[(unsigned)ETextureIndexes::Fleer], 150.f, 1);
+	myActors.back().AttatchController(new CDecisionTreeController());
+	myActors.back().GetController()->SetSteeringBehaviour(new CWander());
 
 	myHealthPickups.reserve(4);
 	for (unsigned i = 0; i < 4; ++i)
