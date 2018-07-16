@@ -33,7 +33,7 @@ void CStateMachineController::Update(CActor & aActor, float aDT)
 			}
 		}
 	}
-		break;
+	break;
 	case EState::Attack:
 	{
 		if (aActor.GetHealth() <= 25)
@@ -42,17 +42,22 @@ void CStateMachineController::Update(CActor & aActor, float aDT)
 			newState = EState::Idle;
 		else
 		{
-			if (myState != myPreviousState)
+			if (Math::Length2(aActor.GetPosition() - aActor.GetClosestEnemy()->GetPosition()) >= 150.f)
 			{
 				SetSteeringBehaviour(new CArrive(myBehaviour->GetPollingStation()));
 			}
+			else
+			{
+				SetSteeringBehaviour(new CFlee(myBehaviour->GetPollingStation()));
+			}
 		}
+
 
 		aActor.GetWeapon()->AimAt(aActor.GetClosestEnemy()->GetPosition());
 		aActor.GetWeapon()->Shoot();
 		aActor.SetTarget(aActor.GetClosestEnemy()->GetPosition());
 	}
-		break;
+	break;
 	case EState::Idle:
 	{
 		if (aActor.GetHealth() <= 25)
@@ -62,7 +67,7 @@ void CStateMachineController::Update(CActor & aActor, float aDT)
 		else if (myState != myPreviousState)
 			SetSteeringBehaviour(new CWander());
 	}
-		break;
+	break;
 	}
 
 	myPreviousState = myState;

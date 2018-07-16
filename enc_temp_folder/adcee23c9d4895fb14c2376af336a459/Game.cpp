@@ -72,7 +72,6 @@ void CGame::Init()
 	myAlarmSprite.setTexture(myTextures[(unsigned)ETextureIndexes::Alarm]);
 
 	myAIEventManager.SubscribeToEvent(CAIEventManager::EAIEvents::ButtonPressed, [&](const sf::Vector2f& aPos)->void { RunAlarm(); });
-
 }
 
 void CGame::Update(float aDT)
