@@ -5,7 +5,7 @@
 
 const sf::Vector2f & CFlee::Update(CSteeringBehaviour::SSteeringData aData)
 {
-	sf::Vector2f fleeTarget = myPollingStation->PollValue(CPollingStation::EPollableValue::arriverPos);
+	sf::Vector2f fleeTarget = aData.actor.GetTarget(); //myPollingStation->PollValue(CPollingStation::EPollableValue::arriverPos);
 
 	sf::Vector2f direction = aData.position - fleeTarget;
 
