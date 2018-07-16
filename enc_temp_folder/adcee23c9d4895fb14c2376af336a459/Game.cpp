@@ -43,12 +43,12 @@ void CGame::Init()
 
 	myActors.reserve(ActorCount);
 	myActors.push_back(CActor());
-	myActors.back().Create(myTextures[(unsigned)ETextureIndexes::Player], 150.f, 0);
+	myActors.back().Create(myTextures[(unsigned)ETextureIndexes::Fleer], 150.f, 0);
 	myActors.back().AttatchController(new CStateMachineController());
 	myActors.back().GetController()->SetSteeringBehaviour(new CWander()); 
 
 	myActors.push_back(CActor());
-	myActors.back().Create(myTextures[(unsigned)ETextureIndexes::Pusher], 150.f, 1);
+	myActors.back().Create(myTextures[(unsigned)ETextureIndexes::Fleer], 150.f, 1);
 	myActors.back().AttatchController(new CDecisionTreeController());
 	myActors.back().GetController()->SetSteeringBehaviour(new CWander());
 
@@ -72,7 +72,6 @@ void CGame::Init()
 	myAlarmSprite.setTexture(myTextures[(unsigned)ETextureIndexes::Alarm]);
 
 	myAIEventManager.SubscribeToEvent(CAIEventManager::EAIEvents::ButtonPressed, [&](const sf::Vector2f& aPos)->void { RunAlarm(); });
-
 }
 
 void CGame::Update(float aDT)

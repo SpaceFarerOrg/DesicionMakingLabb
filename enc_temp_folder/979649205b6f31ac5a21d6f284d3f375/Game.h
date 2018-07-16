@@ -8,7 +8,6 @@
 #include "SheepManager.h"
 #include "HealthPickup.h"
 
-
 enum class ETextureIndexes
 {
 	Button,
