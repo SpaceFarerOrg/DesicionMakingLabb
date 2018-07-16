@@ -7,5 +7,9 @@ public:
 	~CDecisionTreeController();
 
 	void Update(CActor& aActor, float aDT) override;
+
+private:
+	short myDecision;
+	short myPrevDecision;
 };
 
