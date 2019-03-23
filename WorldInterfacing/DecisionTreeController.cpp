@@ -32,9 +32,19 @@ void CDecisionTreeController::Update(CActor & aActor, float aDT)
 	{
 		if (canSeeEnemy)
 		{
-			if (Math::Length(aActor.GetPosition() - aActor.GetClosestEnemy()->GetPosition()) > 150.f)
+			float distToEnemy = Math::Length(aActor.GetPosition() - aActor.GetClosestEnemy()->GetPosition());
+			if (distToEnemy > 50.f && distToEnemy < 150.f)
 			{
 				myDecision = 1;
+				if (myDecision != myPrevDecision)
+				{
+					SetSteeringBehaviour(new CArrive(myBehaviour->GetPollingStation()));
+				}
+			}
+			else if (distToEnemy > 150.f)
+			{
+				myDecision = 4;
+				aActor.SetTarget(aActor.GetPowerUpLocation());
 				if (myDecision != myPrevDecision)
 				{
 					SetSteeringBehaviour(new CArrive(myBehaviour->GetPollingStation()));
@@ -52,6 +62,15 @@ void CDecisionTreeController::Update(CActor & aActor, float aDT)
 			aActor.GetWeapon()->AimAt(aActor.GetClosestEnemy()->GetPosition());
 			aActor.GetWeapon()->Shoot();
 			aActor.SetTarget(aActor.GetClosestEnemy()->GetPosition());
+		}
+		else if (!aActor.IsGod())
+		{
+			myDecision = 5;
+			aActor.SetTarget(aActor.GetPowerUpLocation());
+			if (myDecision != myPrevDecision)
+			{
+				SetSteeringBehaviour(new CArrive(myBehaviour->GetPollingStation()));
+			}
 		}
 		else
 		{

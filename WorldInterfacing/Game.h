@@ -20,6 +20,7 @@ enum class ETextureIndexes
 	Fleer,
 	Arriver,
 	HealthPickup,
+	PowerUP,
 	Count,
 };
 
@@ -56,6 +57,9 @@ private:
 	sf::Sprite myFloorSprite;
 	sf::Sprite myHealthPackSprite;
 	
+	std::pair<sf::Sprite, bool> myPowerUP;
+	float myPowerUPTimer;
+
 	bool IsCloseToHealthPack(const sf::Vector2f& aPos, float aMinDist);
 	void LoadTextures();
 	sf::Vector2f FindSuitableHealthPackPos();

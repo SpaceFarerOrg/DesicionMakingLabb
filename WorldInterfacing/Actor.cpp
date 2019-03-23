@@ -6,6 +6,7 @@
 
 std::vector<CActor>* CActor::ourFellowActors;
 std::vector<CHealthPickup>* CActor::ourAvailableHealthPickups;
+std::pair<sf::Sprite, bool>* CActor::ourPowerUp;
 
 sf::Font CActor::ourFont;
 
@@ -19,8 +20,14 @@ void CActor::SetHealthPickupList(std::vector<CHealthPickup>* aHealthPickupList)
 	ourAvailableHealthPickups = aHealthPickupList;
 }
 
+void CActor::SetPowerUp(std::pair<sf::Sprite, bool>* aPowerUp)
+{
+	ourPowerUp = aPowerUp;
+}
+
 void CActor::Create(sf::Texture & aTexture, float aSpeed, int aID)
 {
+	myIsGod = false;
 	if (aID == 0)
 	{
 		ourFont.loadFromFile("fonts/arial.ttf");
@@ -108,7 +115,7 @@ bool CActor::CanSeeEnemy()
 	
 		float distance = Math::Length(other.GetPosition() - myPosition);
 	
-		if (distance < std::min(shortestDistance, 450.f))
+		if (distance < std::min(shortestDistance, 100000.f))
 		{
 			shortestDistance = distance;
 			closestActor = &other;
@@ -175,6 +182,18 @@ void CActor::SetTarget(const sf::Vector2f & aTarget)
 	myTarget = aTarget;
 }
 
+sf::Vector2f CActor::GetPowerUpLocation()
+{
+	return ourPowerUp->first.getPosition();
+}
+
+void CActor::ActivateGodmode()
+{
+	myGodTimer = 5.f;
+	myWeapon.SetDelay(0.15f);
+	myIsGod = true;
+}
+
 const sf::Sprite & const CActor::GetSprite()
 {
 	return mySprite;
@@ -220,6 +239,18 @@ void CActor::Update(float aDT)
 	}
 	else
 	{
+		if (myIsGod)
+		{
+			myWeapon.AimAt(myPosition + myDirection);
+			myWeapon.Shoot();
+			myGodTimer -= aDT;
+			if (myGodTimer < 0.f)
+			{
+				myIsGod = false;
+				myWeapon.SetDelay(0.75f);
+			}
+		}
+
 		myWeapon.Update(aDT);
 
 		for (CHealthPickup& hp : *ourAvailableHealthPickups)
@@ -229,6 +260,12 @@ void CActor::Update(float aDT)
 				if (PickUpHealth(100))
 					hp.PickUp();
 			}
+		}
+
+		if (Math::Length2(ourPowerUp->first.getPosition() - myPosition) < 64.f * 64.f && ourPowerUp->second == false)
+		{
+			ActivateGodmode();
+			ourPowerUp->second = true;
 		}
 	}
 

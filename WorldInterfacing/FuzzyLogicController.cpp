@@ -39,6 +39,34 @@ void CFuzzyLogicController::Update(CActor & aActor, float aDT)
 		if (IsConfident(aActor) >= 0.f)
 		{
 			aActor.SetTarget(aActor.GetClosestEnemy()->GetPosition());
+			myDecision = 4;
+			if (myDecision != myPrevDecision)
+			{
+				SetSteeringBehaviour(new CArrive(myBehaviour->GetPollingStation()));
+			}
+		}
+	}
+	else if (IsHealthy(aActor) > 0.75f)
+	{
+		if (!aActor.IsGod())
+		{
+			aActor.SetTarget(aActor.GetPowerUpLocation());
+		}
+		else
+		{
+			if (aActor.CanSeeEnemy())
+			{
+				aActor.SetTarget(aActor.GetClosestEnemy()->GetPosition());
+			}
+			else
+			{
+				aActor.SetTarget(aActor.GetPosition() + aActor.GetDirection());
+			}
+		}
+		myDecision = 5;
+		if (myDecision != myPrevDecision)
+		{
+			SetSteeringBehaviour(new CArrive(myBehaviour->GetPollingStation()));
 		}
 	}
 	else
@@ -49,7 +77,6 @@ void CFuzzyLogicController::Update(CActor & aActor, float aDT)
 			SetSteeringBehaviour(new CWander());
 		}
 	}
-
 	myPrevDecision = myDecision;
 	CController::Update(aActor, aDT);
 }
@@ -71,12 +98,11 @@ float CFuzzyLogicController::IsThreatened(CActor & aActor)
 		status = Math::Clamp(Math::Length(aActor.GetClosestEnemy()->GetPosition() - aActor.GetPosition()) / MAX_THREAT_DIST, 0.f, 1.f);
 	}
 	status = 1.f - status;
-	std::cout << status << std::endl;
 	
 	return status;
 }
 
 float CFuzzyLogicController::IsConfident(CActor & aActor)
 {
-	return 0.5f;
+	return aActor.IsGod();
 }

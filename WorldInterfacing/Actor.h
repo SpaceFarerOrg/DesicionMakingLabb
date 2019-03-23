@@ -19,6 +19,7 @@ class CActor
 public:
 	static void SetActorList(std::vector<CActor>* aActorList);
 	static void SetHealthPickupList(std::vector<CHealthPickup>* aHealthPickupList);
+	static void SetPowerUp(std::pair<sf::Sprite, bool>* aPowerUp);
 
 	void Create(sf::Texture& aTexture, float aSpeed, int aID);
 	void ReInit();
@@ -53,7 +54,14 @@ public:
 	const sf::Vector2f& GetTarget();
 	void SetTarget(const sf::Vector2f& aTarget);
 
+	sf::Vector2f GetPowerUpLocation();
+	void ActivateGodmode();
+
+	bool IsGod() { return myIsGod; }
+
 private:
+	float myGodTimer;
+	bool myIsGod;
 	float mySpeed;
 	sf::Sprite mySprite;
 	sf::Vector2f myPosition;
@@ -69,6 +77,7 @@ private:
 
 	static std::vector<CActor>* ourFellowActors;
 	static std::vector<CHealthPickup>* ourAvailableHealthPickups;
+	static std::pair<sf::Sprite, bool>* ourPowerUp;
 
 	static sf::Font ourFont;
 	sf::Text myText;

@@ -58,6 +58,12 @@ void CGame::Init()
 	myActors.back().AttatchController(new CFuzzyLogicController());
 	myActors.back().GetController()->SetSteeringBehaviour(new CWander());
 
+	myPowerUP.first.setTexture(myTextures[(unsigned)ETextureIndexes::PowerUP]);
+	myPowerUP.first.setPosition(vm.width * 0.5f, vm.height * 0.5f);
+	myPowerUP.first.setOrigin(myPowerUP.first.getGlobalBounds().width * 0.5f, myPowerUP.first.getGlobalBounds().height * 0.5f);
+	myPowerUP.second = false;
+	myPowerUPTimer = 0.f;
+
 	myHealthPickups.reserve(4);
 	for (unsigned i = 0; i < 4; ++i)
 	{
@@ -73,6 +79,7 @@ void CGame::Init()
 
 	CActor::SetActorList(&myActors);
 	CActor::SetHealthPickupList(&myHealthPickups);
+	CActor::SetPowerUp(&myPowerUP);
 
 	myFloorSprite.setTexture(myTextures[(unsigned)ETextureIndexes::Room]);
 	myAlarmSprite.setTexture(myTextures[(unsigned)ETextureIndexes::Alarm]);
@@ -83,6 +90,14 @@ void CGame::Init()
 
 void CGame::Update(float aDT)
 {
+	if (myPowerUPTimer < 0.f)
+	{
+		myPowerUPTimer += aDT;
+	}
+	if (myPowerUPTimer >= 0.f)
+	{
+		myPowerUP.second = false;
+	}
 
 	myAlarmSprite.setColor({ 255,255,255,0 });
 	myAlarmTimer += 2.5 * aDT;
@@ -116,6 +131,10 @@ void CGame::Update(float aDT)
 			}
 		}
 	}
+	if (myPowerUP.second && myPowerUPTimer >= 0.f)
+	{
+		myPowerUPTimer = -5.f;
+	}
 
 	CProjectileManager::GetInstance().Update(aDT);
 }
@@ -138,6 +157,11 @@ void CGame::Render()
 	{
 		myHealthPackSprite.setPosition(myHealthPickups[i].GetPosition());
 		myWindow->draw(myHealthPackSprite);
+	}
+
+	if (myPowerUPTimer >= 0.f)
+	{
+		myWindow->draw(myPowerUP.first);
 	}
 
 	CProjectileManager::GetInstance().Render(myWindow);
@@ -181,6 +205,7 @@ void CGame::LoadTextures()
 	myTextures[(unsigned)ETextureIndexes::Fleer].loadFromFile("textures/Fleer.png");
 	myTextures[(unsigned)ETextureIndexes::Arriver].loadFromFile("textures/Arriver.png");
 	myTextures[(unsigned)ETextureIndexes::HealthPickup].loadFromFile("textures/HealthPickup.png");
+	myTextures[(unsigned)ETextureIndexes::PowerUP].loadFromFile("textures/PowerUP.png");
 }
 
 sf::Vector2f CGame::FindSuitableHealthPackPos()
