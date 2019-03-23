@@ -46,7 +46,7 @@ private:
 	CAIEventManager myAIEventManager;
 	CPollingStation myPollingStation;
 
-	static const int ActorCount = 2;
+	static const int ActorCount = 3;
 	std::vector<CActor> myActors;
 	std::vector<CHealthPickup> myHealthPickups;
 

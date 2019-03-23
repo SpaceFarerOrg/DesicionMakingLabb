@@ -132,6 +132,7 @@
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="DecisionTreeController.cpp" />
     <ClCompile Include="Flee.cpp" />
+    <ClCompile Include="FuzzyLogicController.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="HealthPickup.cpp" />
     <ClCompile Include="MouseInputHandler.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="Controller.h" />
     <ClInclude Include="DecisionTreeController.h" />
     <ClInclude Include="Flee.h" />
+    <ClInclude Include="FuzzyLogicController.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="HealthPickup.h" />
     <ClInclude Include="Math.h" />

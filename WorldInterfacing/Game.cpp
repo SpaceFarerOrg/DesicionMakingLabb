@@ -4,6 +4,7 @@
 #include "Controller.h"
 #include "DecisionTreeController.h"
 #include "StateMachineController.h"
+#include "FuzzyLogicController.h"
 #include "MouseInputHandler.h"
 #include "Arrive.h"
 #include "Flee.h"
@@ -50,6 +51,11 @@ void CGame::Init()
 	myActors.push_back(CActor());
 	myActors.back().Create(myTextures[(unsigned)ETextureIndexes::Pusher], 150.f, 1);
 	myActors.back().AttatchController(new CDecisionTreeController());
+	myActors.back().GetController()->SetSteeringBehaviour(new CWander());
+
+	myActors.push_back(CActor());
+	myActors.back().Create(myTextures[(unsigned)ETextureIndexes::Arriver], 150.f, 2);
+	myActors.back().AttatchController(new CFuzzyLogicController());
 	myActors.back().GetController()->SetSteeringBehaviour(new CWander());
 
 	myHealthPickups.reserve(4);
