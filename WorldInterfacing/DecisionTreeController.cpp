@@ -14,8 +14,6 @@ CDecisionTreeController::~CDecisionTreeController()
 
 void CDecisionTreeController::Update(CActor & aActor, float aDT)
 {
-	/* Here be code for behaviour switching :D */
-
 	float health = aActor.GetHealth();
 	bool canSeeEnemy = aActor.CanSeeEnemy();
 

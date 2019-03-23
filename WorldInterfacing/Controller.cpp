@@ -14,6 +14,8 @@ void CController::Update(CActor& aActor,float aDT)
 
 	sf::Vector2f newDirection = myBehaviour->Update({ currentPos, currentDir, mySpeed, myMaxSpeed, aActor });
 
+	mySpeed = 150.f;
+
 	sf::Vector2f newPosition = currentPos + newDirection * mySpeed * aDT;
 
 	sf::Vector2f positionDelta = newPosition - currentPos;
