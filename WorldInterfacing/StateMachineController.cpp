@@ -23,6 +23,11 @@ void CStateMachineController::Update(CActor & aActor, float aDT)
 	{
 		if (aActor.GetHealth() >= 100)
 		{
+			if (Math::Length(aActor.GetPowerUpLocation() - aActor.GetPosition()) < 500)
+			{
+				newState = EState::SeekPowerUp;
+			}
+
 			newState = EState::Idle;
 		}
 		else if (aActor.FindClosestHealthPickup())
@@ -39,7 +44,7 @@ void CStateMachineController::Update(CActor & aActor, float aDT)
 		if (aActor.GetHealth() <= 25)
 			newState = EState::SeekHealth;
 		if (aActor.CanSeeEnemy() == false)
-			newState = EState::Idle;
+			newState = EState::SeekPowerUp;
 		else
 		{
 			if (Math::Length2(aActor.GetPosition() - aActor.GetClosestEnemy()->GetPosition()) >= 150.f)
@@ -66,6 +71,20 @@ void CStateMachineController::Update(CActor & aActor, float aDT)
 			newState = EState::Attack;
 		else if (myState != myPreviousState)
 			SetSteeringBehaviour(new CWander());
+	}
+	break;
+	case EState::SeekPowerUp:
+	{
+		if (myState != myPreviousState)
+		{
+			SetSteeringBehaviour(new CArrive(myBehaviour->GetPollingStation()));
+		}
+		else if (Math::Length(aActor.GetPosition() - aActor.GetPowerUpLocation()) < 0.5f)
+		{
+			newState = EState::Idle;
+		}
+
+		aActor.SetTarget(aActor.GetPowerUpLocation());
 	}
 	break;
 	}

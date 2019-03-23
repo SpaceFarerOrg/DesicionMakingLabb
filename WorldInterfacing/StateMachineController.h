@@ -9,6 +9,7 @@ public:
 		Attack,
 		Idle,
 		SeekHealth,
+		SeekPowerUp,
 		Count
 	};
 
